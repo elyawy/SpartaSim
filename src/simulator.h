@@ -4,8 +4,8 @@
 #include<vector>
 #include <string>
 #include<chrono>
+#include <random>
 #include "tree.h"
-#include "FastZip.h"
 #include "SpartaABC_options.h"
 #include "Block.h"
 #include "Event.h"
