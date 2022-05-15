@@ -3,7 +3,7 @@
 #include "definitions.h"
 #include "treeUtil.h"
 #include "treeIt.h"
-#include "someUtil.h"
+// #include "someUtil.h"
 #include <fstream>
 #include <iostream>
 #include <cassert>
@@ -418,7 +418,7 @@ vector<tree> getNexusTreesFromFile (const string& nexusTreesFile)
 		}
 		tree tr(treeContents);
 		for(size_t i=0 ; i < idTable.size(); ++i) {
-			tree::nodeP node = tr.findNodeByName(int2string(idTable[i]));
+			tree::nodeP node = tr.findNodeByName(std::to_string(idTable[i]));// used to be int2string from someUtil.h
 			node->setName(nameTable[i]);
 		}
 		treeVec.push_back(tr);
@@ -427,3 +427,20 @@ vector<tree> getNexusTreesFromFile (const string& nexusTreesFile)
 	return treeVec;
 }
 
+void putFileIntoVectorStringArray(istream &infile,vector<string> &inseqFile){
+	inseqFile.clear();
+	string tmp1;
+	while (getline(infile,tmp1, '\n' ) ) {
+		if (tmp1.empty()) continue;
+		if (tmp1.size() > 100000) { // was 15000 
+			vector<string> err;
+			err.push_back("Unable to read file. It is required that each line is no longer than");
+			err.push_back("15000 characters. "); //A.M. size was changed to 100000 but error message wasn't updated
+			errorMsg::reportError(err,1); 
+		}
+		if (tmp1[tmp1.size()-1]=='\r') {// in case we are reading a dos file 
+			tmp1.erase(tmp1.size()-1);
+		}// remove the traling carrige-return
+		inseqFile.push_back(tmp1);
+	}
+}

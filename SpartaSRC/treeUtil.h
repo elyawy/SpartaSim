@@ -45,6 +45,7 @@ void fillAllNodesNames(Vstring& Vnames,const tree& tr);
 void printTreeWithValuesAsBP(ostream &out, const tree &tr, Vstring values, VVVdouble *probs, int from, int to);
 void printTreeWithValuesAsBP(ostream &out, const tree::nodeP &myNode, Vstring values,  VVVdouble *probs, int from, int to);
 
+void putFileIntoVectorStringArray(istream &infile,vector<string> &inseqFile);
 
 #endif
 

@@ -1,8 +1,10 @@
+
 // $Id: readTree.cpp 5525 2008-12-19 20:17:05Z itaymay $
 
 #include "definitions.h"
 #include "errorMsg.h"
-#include "someUtil.h"
+#include "logFile.h"
+// #include "someUtil.h"
 #include "readTree.h"
 #include <iostream>
 using namespace std;
@@ -168,7 +170,7 @@ MDOUBLE getDistance(vector<char>::const_iterator &p_itCurrent) {
 	string sTempNumber;
 	for ( ; isdigit(*p_itCurrent) || (*p_itCurrent)==PERIOD || (*p_itCurrent)=='E'|| (*p_itCurrent)=='e'|| (*p_itCurrent)=='-' || (*p_itCurrent)=='+'; ++p_itCurrent)	
 		sTempNumber += (*p_itCurrent);
-	MDOUBLE dDistance = string2double(sTempNumber);
+	MDOUBLE dDistance = stod(sTempNumber);
 	return dDistance;
 }
 

@@ -7,8 +7,7 @@
 #include "readTree.h"
 #include "errorMsg.h"
 #include "logFile.h"
-
-
+#include <cmath>
 //***********************************************************************************
 // class tree represents only the topology. It has no MSA and assumes no model of evolution.
 //***********************************************************************************

@@ -15,34 +15,14 @@ bool is_boomed;
 
 // TODO: implement a random class containing all required random functions. for now this is a workaround
 // to get rid of excess files:
-int seed = static_cast<int>(chrono::system_clock::now().time_since_epoch().count());
-default_random_engine generator(seed);
-mt19937 mt_rand(seed);
-double drawExp(double lambda) {
-	
-	exponential_distribution<double> distribution(lambda);
-	double number = distribution(generator);
-	return number;
-}
-double uniform() { // uniform between 0 and 1
-	uniform_real_distribution<double> distribution(0.0, 1.0);
-	double number = distribution(generator);
-	return number;
-}
 
-int uniform(int a, int b) { // a random number between a and b, including a and b.
-	uniform_int_distribution<int> distribution(a, b);
-	int number = distribution(generator);
-	return number;
-}
-// implement differently!
 
 Simulator::Simulator(const string& treeFileName) {
 	_originTree = tree(treeFileName);
 }
 
 void Simulator::InitSimulator(size_t rootLength, 
-							  const string& distName ,  Vdouble Insertion_params, Vdouble Deletion_params,
+							  const string& distName, Vdouble Insertion_params, Vdouble Deletion_params,
 							  double IR, double DR) {
 	_rootLength = rootLength;
 	_distName = distName;
@@ -54,8 +34,13 @@ void Simulator::InitSimulator(size_t rootLength,
 	length_dist_deletions = nullptr;
 	length_dist_insertions = nullptr;
 
+
 	getDistribution(length_dist_deletions, _distName, _Deletion_params, MaxIndelSize);
 	getDistribution(length_dist_insertions, _distName, _Insertion_params, MaxIndelSize);
+}
+
+void Simulator::setSeed(size_t seed){
+	resetSeed(seed);
 }
 
 
