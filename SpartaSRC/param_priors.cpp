@@ -1,4 +1,11 @@
 #include "param_priors.h"
+#include <chrono>
+
+
+int seed = static_cast<int>(chrono::system_clock::now().time_since_epoch().count());
+default_random_engine generator(seed);
+mt19937 mt_rand(seed);
+
 
 double getRandDoubleParamVal(string distributionName, double minVal, double maxVal)
 {
@@ -37,4 +44,30 @@ double roundParamVal(double paramToRound, int numDigAfterDecPoint)
 	// double roundedVal = (int)(paramToRound * (int)factor) / factor;
 	double roundedVal = (floor(paramToRound * factor) / factor);
 	return roundedVal;
+}
+
+
+void resetSeed(size_t new_seed) {
+	srand(new_seed);
+	generator.seed(new_seed);
+	mt_rand.seed(new_seed);
+}
+
+
+double drawExp(double lambda) {
+	
+	exponential_distribution<double> distribution(lambda);
+	double number = distribution(generator);
+	return number;
+}
+double uniform() { // uniform between 0 and 1
+	uniform_real_distribution<double> distribution(0.0, 1.0);
+	double number = distribution(generator);
+	return number;
+}
+
+int uniform(int a, int b) { // a random number between a and b, including a and b.
+	uniform_int_distribution<int> distribution(a, b);
+	int number = distribution(generator);
+	return number;
 }

@@ -121,10 +121,10 @@ class CMakeBuild(build_ext):
 # logic and declaration, and simpler if you include description/version in a file.
 setup(
     name="Sparta",
-    version="0.0.1",
-    author="Dean Moldovan",
-    author_email="dean0x7d@gmail.com",
-    description="A test project using pybind11 and CMake",
+    version="0.2",
+    author="Elya Wygoda",
+    author_email="elya.wygoda@gmail.com",
+    description="A fast and lightweight indel simulator",
     long_description="",
     ext_modules=[CMakeExtension("Sparta")],
     cmdclass={"build_ext": CMakeBuild},

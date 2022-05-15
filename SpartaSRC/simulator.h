@@ -23,6 +23,7 @@ class Simulator {
 	public:
 		explicit Simulator(const string& treeFileName);
 		void InitSimulator(size_t rootLength, const string& distName,  Vdouble Insertion_params, Vdouble Deletion_params, double IR, double DR);
+		void setSeed(size_t seed);
 		MSA simulateBasedOnTree();
 		vector<string> leafNames;
 

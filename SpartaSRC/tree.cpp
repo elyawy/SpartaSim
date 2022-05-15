@@ -2,7 +2,7 @@
 #include "tree.h"
 #include "treeUtil.h"
 #include "logFile.h"
-#include "someUtil.h"
+// #include "someUtil.h"
 #include <cassert>
 #include <algorithm>
 #include <iostream>
@@ -547,7 +547,7 @@ void tree::create_names_to_internal_nodes() {
 	getAllHTUs(htuVec,_root);
 
 	for (size_t i=0; i<htuVec.size(); ++i) {
-		string name = int2string(i+1);
+		string name = std::to_string(i+1);
 		htuVec[i]->setName((string)"N" + name);
 	}
 }
@@ -789,7 +789,7 @@ string tree::stringTreeInPhylipTreeFormat(bool withHTU ) const {
 	  treeString += "(" + _root->name() + ":0.0";
 	  if (_root->getComment().length()) treeString += "[&&NHX" + _root->getComment() + "]";
 	  treeString += ",";
-	  treeString +=_root->getSon(0)->name() + ":" + double2string(_root->getSon(0)->dis2father());
+	  treeString +=_root->getSon(0)->name() + ":" + std::to_string(_root->getSon(0)->dis2father());
 	  if (_root->getSon(0)->getComment().length()) treeString += "[&&NHX" + _root->getSon(0)->getComment() + "]";
 	  treeString += ")\n";
 	  return (treeString);
@@ -887,7 +887,7 @@ int tree::string_print_from(nodeP from_node, string& s, bool withHTU ) const {
 		if (withHTU==true) 
 			s += from_node->name();
 	}
-	s += ":" + double2string(from_node->dis2father());
+	s += ":" + std::to_string(from_node->dis2father());
 	if (from_node->getComment().length()) s += "[&&NHX" + from_node->getComment() + "]";
 
 	return 0;
@@ -1385,13 +1385,13 @@ bool tree::isUltrametric(MDOUBLE tol, bool bErrorIfNot) const
 	for (size_t t = 1; t < nodes.size(); ++t)
 	{
 		MDOUBLE dist = getDistanceFromNode2ROOT(nodes[t]);
-		if (!DEQUAL(dist, dist0, tol))
+		if (!(fabs(dist-dist0)<tol)) // check if within threshold of tol.
 		{
 			if (bErrorIfNot)
 			{
 				string error = "Error: tree is not ultrametric\n";
-				error += "the distance from " + nodes[0]->name() + " to the root is: " + double2string(dist0) +"\n";
-				error += "the distance from " + nodes[t]->name() + " to the root is: " + double2string(dist) +"\n"; 
+				error += "the distance from " + nodes[0]->name() + " to the root is: " + std::to_string(dist0) +"\n";
+				error += "the distance from " + nodes[t]->name() + " to the root is: " + std::to_string(dist) +"\n"; 
 				errorMsg::reportError(error);
 			}
 			return false;

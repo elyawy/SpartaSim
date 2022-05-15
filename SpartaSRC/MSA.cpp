@@ -1,10 +1,7 @@
 #include "MSA.h"
 
 MSA::MSA(const vector<string> & seqArray) : _alignedSeqs(seqArray), _numberOfSequences(seqArray.size()), _statFlag(false)
-{
-	std::cout << _statFlag << "\n";
-
-} //constructor from vector string
+{} //constructor from vector string
 
 MSA::MSA(string filename)
 {
