@@ -6,6 +6,7 @@
 using namespace std;
 
 
+// utility function to return length distribution object.
 static void getDistribution(lengthDistribution* &l, string distributionName ,Vdouble parameters, int maxLength){
 	if(l != nullptr){
 		// cout << "l is nullptr" << endl;

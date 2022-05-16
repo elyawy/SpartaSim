@@ -1,10 +1,17 @@
 #include "param_priors.h"
 #include <chrono>
+#include <iostream>
+
+default_random_engine generator(0);
+mt19937 mt_rand(0);
 
 
-int seed = static_cast<int>(chrono::system_clock::now().time_since_epoch().count());
-default_random_engine generator(seed);
-mt19937 mt_rand(seed);
+void initializeSeed(){
+	int seed = static_cast<int>(chrono::system_clock::now().time_since_epoch().count());
+	srand(seed);
+	generator.seed(seed);
+	mt_rand.seed(seed);
+}
 
 
 double getRandDoubleParamVal(string distributionName, double minVal, double maxVal)
@@ -51,6 +58,7 @@ void resetSeed(size_t new_seed) {
 	srand(new_seed);
 	generator.seed(new_seed);
 	mt_rand.seed(new_seed);
+	std::cout << "applied new seed\n";
 }
 
 

@@ -5,22 +5,18 @@
 
 using namespace std;
 
-//const int MaxIndelSize = 50; // maximum length of insertion or deletion
-int tmparray[MaxIndelSize];
-//updated vraibles //OI 15.3
 LinkedList superSequence;
 vector<nucID> numbered_superSequnce;
 nucID currIdToInsert;
 bool is_boomed;
 
-// TODO: implement a random class containing all required random functions. for now this is a workaround
-// to get rid of excess files:
-
-
+// Build simulator for a given tree.
 Simulator::Simulator(const string& treeFileName) {
 	_originTree = tree(treeFileName);
+	RandomGenerators::initRandomGenerator(); // initialize random generators in simulation (pseudo-random given time).
 }
 
+// Prepare simulator for specific simulation, need to be called for each set of different parameters.
 void Simulator::InitSimulator(size_t rootLength, 
 							  const string& distName, Vdouble Insertion_params, Vdouble Deletion_params,
 							  double IR, double DR) {
@@ -39,8 +35,9 @@ void Simulator::InitSimulator(size_t rootLength,
 	getDistribution(length_dist_insertions, _distName, _Insertion_params, MaxIndelSize);
 }
 
+// Force a specific random seed on the simulator to create repeatable simulations.
 void Simulator::setSeed(size_t seed){
-	resetSeed(seed);
+	RandomGenerators::setSeed(seed);
 }
 
 
@@ -207,7 +204,7 @@ bool Simulator::simualteWithIndelsAlongAspecificBranch_while_creating_events(dou
 	//running over the branch...
 	double sequenceWiseInsertionRate = 1.0 * _IR * (sequence_length + 1);
 	double sequenceWiseDeletionRate = 1.0 * _DR * sequence_length;
-	double waitingTime = drawExp(sequenceWiseInsertionRate + sequenceWiseDeletionRate);
+	double waitingTime = RandomGenerators::drawExp(sequenceWiseInsertionRate + sequenceWiseDeletionRate);
 	while (waitingTime < branchlength)
 	{//running through all the events
 		//cout << current_event.getIndel_Flag() << " , " << current_event.getIndex() << " , " << current_event.getLength() << endl;//in order to print events... OI 24.3	
@@ -217,11 +214,11 @@ bool Simulator::simualteWithIndelsAlongAspecificBranch_while_creating_events(dou
 			return false;
 		}
 		bool isDeletion = true;
-		if (uniform() < sequenceWiseInsertionRate / (sequenceWiseInsertionRate + sequenceWiseDeletionRate)) isDeletion = false;
+		if (RandomGenerators::uniform() < sequenceWiseInsertionRate / (sequenceWiseInsertionRate + sequenceWiseDeletionRate)) isDeletion = false;
 		if (!isDeletion)
 		{//Flag==TRUE---->> insertion //OI 15.3
 			//initilizing the insert params //OI 15.3
-			int insertion_index = uniform(0, sequence_length + 1);
+			int insertion_index = RandomGenerators::uniform(0, sequence_length + 1);
 			// size_t insertion_length = _fastZInsertions.drawZip();
 			size_t insertion_length = length_dist_insertions->drawLength();
 
@@ -287,7 +284,7 @@ bool Simulator::simualteWithIndelsAlongAspecificBranch_while_creating_events(dou
 		else
 		{//Flag==FALSE---->> deletion //OI 16.3
 			//initilizing the deletion params ///OI 16.3
-			int deletion_index = uniform(0, sequence_length - 1);
+			int deletion_index = RandomGenerators::uniform(0, sequence_length - 1);
 			// size_t deletion_size = _fastZDeletions.drawZip();
 			size_t deletion_size = length_dist_deletions->drawLength();
 
@@ -391,7 +388,7 @@ bool Simulator::simualteWithIndelsAlongAspecificBranch_while_creating_events(dou
 		branchlength = branchlength - waitingTime;
 		sequenceWiseInsertionRate = 1.0 * _IR * (sequence_length + 1);
 		sequenceWiseDeletionRate = 1.0 * _DR * sequence_length;
-		waitingTime = drawExp(sequenceWiseInsertionRate + sequenceWiseDeletionRate);
+		waitingTime = RandomGenerators::drawExp(sequenceWiseInsertionRate + sequenceWiseDeletionRate);
 	}
 	//printing temp //OI 29.3
 	//printblockvec(block_sequence);
@@ -591,7 +588,7 @@ bool Simulator::create_event_vector(double branchlength, int ancestralsequencele
 	// temp bool- to check "boomers"
 	double sequenceWiseInsertionRate = 1.0 * _IR * (ancestralsequencelength + 1);
 	double sequenceWiseDeletionRate = 1.0 * _DR * ancestralsequencelength;
-	double waitingTime = drawExp(sequenceWiseInsertionRate + sequenceWiseDeletionRate);
+	double waitingTime = RandomGenerators::drawExp(sequenceWiseInsertionRate + sequenceWiseDeletionRate);
 	while (waitingTime < branchlength)
 	{//running over the branch
 		if (ancestralsequencelength > _rootLength * 25)
@@ -600,12 +597,12 @@ bool Simulator::create_event_vector(double branchlength, int ancestralsequencele
 		}
 
 		bool isDeletion = true;
-		if (uniform() < sequenceWiseInsertionRate / (sequenceWiseInsertionRate + sequenceWiseDeletionRate)) isDeletion = false;
+		if (RandomGenerators::uniform() < sequenceWiseInsertionRate / (sequenceWiseInsertionRate + sequenceWiseDeletionRate)) isDeletion = false;
 		if (isDeletion) {
 
 			//Deletion
 			//initializing the start point and length of deletion //15.3 OI
-			int theStartingPoint = uniform(0, ancestralsequencelength - 1);
+			int theStartingPoint = RandomGenerators::uniform(0, ancestralsequencelength - 1);
 			// size_t deletionLength = _fastZDeletions.drawZip();
 			size_t deletionLength = length_dist_deletions->drawLength();
 			if (theStartingPoint == 0 && deletionLength >= ancestralsequencelength)
@@ -624,7 +621,7 @@ bool Simulator::create_event_vector(double branchlength, int ancestralsequencele
 		else
 		{//insertion
 			//initializing the start point and length of insertion// 15.3 OI
-			size_t theStartingPoint = uniform(0, ancestralsequencelength + 1);
+			size_t theStartingPoint = RandomGenerators::uniform(0, ancestralsequencelength + 1);
 			// size_t insertionLength = _fastZInsertions.drawZip();
 			size_t insertionLength = length_dist_insertions->drawLength();
 			// inserting the event to the vevent vector and updating the length of the sequence//OI  15.3
@@ -636,7 +633,7 @@ bool Simulator::create_event_vector(double branchlength, int ancestralsequencele
 		branchlength = branchlength - waitingTime;
 		sequenceWiseInsertionRate = 1.0 * _IR * (ancestralsequencelength + 1);
 		sequenceWiseDeletionRate = 1.0 * _DR * ancestralsequencelength;
-		waitingTime = drawExp(sequenceWiseInsertionRate + sequenceWiseDeletionRate);
+		waitingTime = RandomGenerators::drawExp(sequenceWiseInsertionRate + sequenceWiseDeletionRate);
 	}
 	return true;
 }

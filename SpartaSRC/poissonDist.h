@@ -1,5 +1,5 @@
 #include "lengthDistribution.h"
-#include "param_priors.h"
+#include "RandomGenerators.h"
 
 
 class poissonDist: public lengthDistribution 
@@ -10,7 +10,6 @@ public:
 	int drawLength();
 	~poissonDist();
 private:
-    std::mt19937 generator;
 	std::poisson_distribution<int> distribution;
 };
 

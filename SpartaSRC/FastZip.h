@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <iostream>
-#include "param_priors.h"
+#include "RandomGenerators.h"
 #include <cmath>
 
 using namespace std;

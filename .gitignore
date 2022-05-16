@@ -1,2 +1,5 @@
-Doxyfile
-./SpartaABC
+Sparta.egg-info
+build
+tests/__pycache__
+SpartaSRC/test.cpp
+SpartaSRC/test

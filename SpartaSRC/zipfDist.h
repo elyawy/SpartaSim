@@ -1,5 +1,4 @@
 #include "lengthDistribution.h"
-#include "param_priors.h"
 #include "FastZip.h"
 
 class zipfDist: public lengthDistribution 

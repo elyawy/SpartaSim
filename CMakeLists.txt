@@ -12,7 +12,7 @@ ADD_LIBRARY(LibsModule
     SpartaSRC/logFile.cpp
     SpartaSRC/MSA.cpp
     SpartaSRC/Node.cpp
-    SpartaSRC/param_priors.cpp
+    SpartaSRC/RandomGenerators.cpp
     SpartaSRC/poissonDist.cpp
     SpartaSRC/read_seqs.cpp
     SpartaSRC/readTree.cpp
