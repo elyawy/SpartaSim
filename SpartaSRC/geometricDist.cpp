@@ -3,14 +3,13 @@
 using namespace std;
 
 void geometricDist::generateLengthDistribution() {
-	mt19937 gen(std::rand());
-	generator = gen;
     geometric_distribution<int> d(this->parameters[0]);
 	distribution = d;
 }
 
 
 int geometricDist::drawLength() {
+	mt19937 generator = RandomGenerators::getEngine();
 	int length  = distribution(generator)+1;
 	while (length > this->maxLength){
 		length  = distribution(generator)+1;

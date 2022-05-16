@@ -1,5 +1,5 @@
 #include "lengthDistribution.h"
-#include "param_priors.h"
+#include "RandomGenerators.h"
 
 
 class geometricDist: public lengthDistribution 
@@ -10,7 +10,6 @@ public:
 	int drawLength();
 	~geometricDist();
 private:
-    std::mt19937 generator;
 	std::geometric_distribution<int> distribution;
 };
 

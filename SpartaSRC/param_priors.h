@@ -7,6 +7,9 @@
 #include <math.h>
 
 using namespace std;
+
+void initializeSeed();
+
 double getRandDoubleParamVal(string distributionName, double minVal, double maxVal);
 int getRandIntParamVal(string distributionName, int minVal, int maxVal);
 double roundParamVal(double paramToRound, int numDigAfterDecPoint);
