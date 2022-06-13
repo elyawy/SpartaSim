@@ -7,6 +7,7 @@ MSA::MSA(string filename)
 {
 	_alignedSeqs = read_fasta_from_file(filename);
 	_numberOfSequences = _alignedSeqs.size();
+	_statFlag = false;
 	trimMSAFromAllIndelPositionAndgetSummaryStatisticsFromIndelCounter();
 	setValuesOfIndelSummStats();
 	setLongestAndShortestSequenceLengths();

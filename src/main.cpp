@@ -15,8 +15,8 @@ PYBIND11_MODULE(Sparta, m) {
         .. autosummary::
            :toctree: _generate
 
-           init_sim
-           simulate_based_on_tree
+           Simulator
+           Msa
     )pbdoc";
 
     py::class_<Simulator>(m, "Sim")
