@@ -108,7 +108,7 @@ class CMakeBuild(build_ext):
 
         if not os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
-
+        print(["cmake", ext.sourcedir] + cmake_args)
         subprocess.check_call(
             ["cmake", ext.sourcedir] + cmake_args, cwd=self.build_temp
         )
@@ -121,7 +121,7 @@ class CMakeBuild(build_ext):
 # logic and declaration, and simpler if you include description/version in a file.
 setup(
     name="Sparta",
-    version="0.2",
+    version="0.3",
     author="Elya Wygoda",
     author_email="elya.wygoda@gmail.com",
     description="A fast and lightweight indel simulator",
