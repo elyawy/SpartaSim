@@ -6,7 +6,7 @@
 #include <string>
 using namespace std;
 
-vector<string> read_fasta_from_file(string filename);
+const vector<string> read_fasta_from_file(string filename);
 
 
 #endif

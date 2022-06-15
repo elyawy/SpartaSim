@@ -1,6 +1,6 @@
 #include "read_seqs.h"
 
-vector<string> read_fasta_from_file(string filename)
+const vector<string> read_fasta_from_file(string filename)
 {
 	vector<string> seqs;
 	ifstream myFile;
