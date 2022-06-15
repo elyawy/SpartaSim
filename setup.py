@@ -121,7 +121,7 @@ class CMakeBuild(build_ext):
 # logic and declaration, and simpler if you include description/version in a file.
 setup(
     name="Sparta",
-    version="0.3",
+    version="0.4",
     author="Elya Wygoda",
     author_email="elya.wygoda@gmail.com",
     description="A fast and lightweight indel simulator",

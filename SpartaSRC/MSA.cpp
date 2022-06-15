@@ -1,20 +1,69 @@
 #include "MSA.h"
 
-MSA::MSA(const vector<string> & seqArray) : _alignedSeqs(seqArray), _numberOfSequences(seqArray.size()), _statFlag(false)
-{} //constructor from vector string
-
-MSA::MSA(string filename)
+MSA::MSA(const vector<string> & seqArray) : _originalAlignedSeqs(seqArray), _numberOfSequences(seqArray.size()), _statFlag(false)
 {
-	_alignedSeqs = read_fasta_from_file(filename);
-	_numberOfSequences = _alignedSeqs.size();
-	_statFlag = false;
-	trimMSAFromAllIndelPositionAndgetSummaryStatisticsFromIndelCounter();
-	setValuesOfIndelSummStats();
-	setLongestAndShortestSequenceLengths();
+	initializeAllVariables();
+} //constructor from vector string
+
+MSA::MSA(string filename) : _originalAlignedSeqs(read_fasta_from_file(filename)),
+							_numberOfSequences(_originalAlignedSeqs.size()),
+							_statFlag(false)
+{
+	// trimMSAFromAllIndelPositionAndgetSummaryStatisticsFromIndelCounter();
+	// setValuesOfIndelSummStats();
+	// setLongestAndShortestSequenceLengths();
 	
 } //constructor from sequence file in fasta
 
+
+void MSA::initializeAllVariables() {
+
+	_alignedSeqs.clear();
+	_alignedSeqs.resize(_originalAlignedSeqs.size());
+	
+	std::copy(_originalAlignedSeqs.begin(), _originalAlignedSeqs.end(), _alignedSeqs.begin());
+
+	_aveIndelLength = 0;
+	_totalNumberOfIndels = 0;
+	_longestSeqLength = 0;
+	_shortestSeqLength = 0;
+	//vector<string> _unalignedSeqs; //The unaligned sequences
+
+	_numberOfIndelsOfLengthOne = 0; //counts the number of indels of size 1 over all sequences
+	_numberOfIndelsOfLengthTwo = 0; //counts the number of indels of size 2 over all sequences
+	_numberOfIndelsOfLengthThree = 0; //counts the number of indels of size 3 over all sequences
+	_numberOfIndelsOfLengthAtLeastFour = 0; //counts the number of indels of size 4+ over all sequences
+	
+	_numberOfIndelsOfLengthOneInOnePosition = 0;
+	_numberOfIndelsOfLengthOneInTwoPositions = 0;
+	_numberOfIndelsOfLengthOneInNMinus1Positions = 0;
+	_numberOfIndelsOfLengthTwoInOnePosition = 0;
+	_numberOfIndelsOfLengthTwoInTwoPositions = 0;
+	_numberOfIndelsOfLengthTwoInNMinus1Positions = 0;
+	_numberOfIndelsOfLengthThreeInOnePosition = 0;
+	_numberOfIndelsOfLengthThreeInTwoPositions = 0;
+	_numberOfIndelsOfLengthThreeInNMinus1Positions = 0;
+	_numberOfIndelsOfLengthAtLeastFourInOnePosition = 0;
+	_numberOfIndelsOfLengthAtLeastFourInTwoPositions = 0;
+	_numberOfIndelsOfLengthAtLeastFourInNMinus1Positions = 0;
+
+	_numberOfMSA_position_with_0_gaps = 0;
+	_numberOfMSA_position_with_1_gaps = 0;
+	_numberOfMSA_position_with_2_gaps = 0;
+	_numberOfMSA_position_with_n_minus_1_gaps = 0;
+	
+
+	_uniqueIndelMap.clear();
+	_indelCounter.clear();
+	// unique indels summary statistics
+	_aveUniqueIndelLength = 0;
+	_totalNumberOfUniqueIndels = 0;
+}
+
 void MSA::recomputeStats() {
+	initializeAllVariables();
+
+
 	trimMSAFromAllIndelPositionAndgetSummaryStatisticsFromIndelCounter();
 	setValuesOfIndelSummStats();
 	setLongestAndShortestSequenceLengths();

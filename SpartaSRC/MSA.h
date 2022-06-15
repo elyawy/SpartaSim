@@ -20,7 +20,7 @@ public:
 
 	MSA(){};
 
-	int getMSAlength() const {return _alignedSeqs[0].size();}
+	int getMSAlength() const {return _originalAlignedSeqs[0].size();}
 	int getNumberOfSequences() const {return _numberOfSequences;} 
 	int getTotalNumberOfIndels() const {return _totalNumberOfIndels;}
 	int getTotalNumberOfUniqueIndels() const {return _totalNumberOfUniqueIndels;}
@@ -51,7 +51,7 @@ public:
 
 	double getStatValByType(stat_type statTypeToGet);
 	vector<string> getUnalignedSeqs() const;
-	vector<string> getAlignedSeqs () const {return _alignedSeqs;}
+	vector<string> getAlignedSeqs () const {return _originalAlignedSeqs;}
 	void printMSA();
     void recomputeStats();
 
@@ -62,6 +62,8 @@ public:
 	~MSA();
 
 private:
+	const vector<string> _originalAlignedSeqs; //The aligned sequences
+
 	vector<string> _alignedSeqs; //The aligned sequences
 	int _numberOfSequences; // NUMBER OF SEQUENCES IN THE MSA
 	double _aveIndelLength;
@@ -107,6 +109,7 @@ private:
 	void setLongestAndShortestSequenceLengths();
 	void trimMSAFromAllIndelPositionAndgetSummaryStatisticsFromIndelCounter();
 
+	void initializeAllVariables();
 	bool _statFlag;
 	void setStatFlag();
 
