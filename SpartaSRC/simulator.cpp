@@ -48,7 +48,6 @@ MSA Simulator::simulateBasedOnTree() {
 	// a root sequence of length six would be V = {0,1,2,3,4,5}
 	//remark- for each defention I will add one of my own //OI 17.3
 	//another note- when I write "upgraded"- the meaning is the new code, or my code //OI  17.3
-	// small hack for now to add the C parameter of the new distribution:
 	
 	//cout << "simulate on tree" << endl;
 	//creating to important things- the simulated leeave vector and the current id to insert...
@@ -66,11 +65,17 @@ MSA Simulator::simulateBasedOnTree() {
 	
 	while (!length_flag)
 	{
-		vector<vector<Node*>> simulated_leaves_sequences;
+        superSequence.delete_LL();
+        leafNames.clear();
+        simulated_leaves_sequences.clear();
+        currIdToInsert = _rootLength;
+        ancestral_sequence.clear();
+        ancestral_sequence = generateRootSequence();
+
 		length_flag = simulateAlongTree(_originTree.getRoot(),  ancestral_sequence,
 									  simulated_leaves_sequences);
 	}
-	
+
 
 	// extreme case- when the gene length is to long.
 	// if (!length_flag)
@@ -82,13 +87,16 @@ MSA Simulator::simulateBasedOnTree() {
 
 	//new alignment- the upgraded one- creating the alignment
 	vector<string> resulting_alignment;
+
 	simulationToMSA_with_SuperSequence(simulated_leaves_sequences, resulting_alignment);
 	
+  
 
 	//outputInFastaFormat(simulatedLeavesSequences);
 
 	//releasing memory
 	superSequence.delete_LL();
+
 
 
 	return MSA(resulting_alignment);
@@ -149,13 +157,12 @@ bool Simulator::simulateAlongTree(tree::nodeP t,
 						const vector<Node*>& father_seq,
 						vector<vector<Node*>>& simulated_sequences ) {
 	vector<nucID> outSequence;
-	//cout << "simulate along branch" << endl;
+    
 	if (t->isLeaf()) {
 		//here we added the upgraded leaves vector... //OI 17.3
 		simulated_sequences.push_back(father_seq);
 		leafNames.push_back(t->name());
-	}
-	else {// internal node}
+	} else {// internal node}
 		for (size_t i = 0; i < t->getNumberOfSons(); ++i) {
 			bool flag = true;
 			// first we simulate the sequence of son i,
@@ -164,20 +171,14 @@ bool Simulator::simulateAlongTree(tree::nodeP t,
 
 			vector <Node*> output_sequence;
 			//small change- now returns boolean
+            
 			flag=simualteWithIndelsAlongAspecificBranch_while_creating_events(t->getSon(i)->dis2father(), father_seq, output_sequence);
-			if (!flag)
-			{
-				return false;
-			}
+			if (!flag) return false;
 			
 			flag=simulateAlongTree(t->getSon(i), output_sequence,simulated_sequences);
 			//recursion!!!!
-			if (!flag)
-			{
-				return false;
-			}
+			if (!flag) return false;
 		}
-		
 	}
 	return true;
 }
@@ -208,7 +209,8 @@ bool Simulator::simualteWithIndelsAlongAspecificBranch_while_creating_events(dou
 	while (waitingTime < branchlength)
 	{//running through all the events
 		//cout << current_event.getIndel_Flag() << " , " << current_event.getIndex() << " , " << current_event.getLength() << endl;//in order to print events... OI 24.3	
-		if (sequence_length > _rootLength * 25)
+
+        if (sequence_length > _rootLength * 25)
 		{
 			// if the length is to large.
 			return false;
@@ -591,6 +593,7 @@ bool Simulator::create_event_vector(double branchlength, int ancestralsequencele
 	double waitingTime = RandomGenerators::drawExp(sequenceWiseInsertionRate + sequenceWiseDeletionRate);
 	while (waitingTime < branchlength)
 	{//running over the branch
+
 		if (ancestralsequencelength > _rootLength * 25)
 		{
 			return false;
@@ -943,6 +946,10 @@ void Simulator::back_to_numbers(const vector<vector<Node*>>& upgraded_vector, ve
 	}
 	numbered_superSequnce = temp_super_sequence;//assigning the numbered_upgraded super sequence //OI 17.3
 }
+
+// void Simulator::resetSimulator(){
+
+// }
 
 
 Simulator::~Simulator(){

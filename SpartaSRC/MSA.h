@@ -55,8 +55,6 @@ public:
 	void printMSA();
     void recomputeStats();
 
-	bool getStatFlag() const {return _statFlag;};
-
 	vector<double> getStatVec();
 	
 	~MSA();
@@ -110,8 +108,6 @@ private:
 	void trimMSAFromAllIndelPositionAndgetSummaryStatisticsFromIndelCounter();
 
 	void initializeAllVariables();
-	bool _statFlag;
-	void setStatFlag();
 
 };
 #endif
