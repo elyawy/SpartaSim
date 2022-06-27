@@ -67,7 +67,7 @@ class Simulator {
 			const vector<nucID>& ancestralSequence,
 			double branchLength,
 			vector<nucID>& outputSeq, vector<Event>& event_vec);
-	
+        // void resetSimulator();
 
 		tree _originTree;
 		//VARIBLES

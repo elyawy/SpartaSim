@@ -1,18 +1,14 @@
 #include "MSA.h"
 
-MSA::MSA(const vector<string> & seqArray) : _originalAlignedSeqs(seqArray), _numberOfSequences(seqArray.size()), _statFlag(false)
+MSA::MSA(const vector<string> & seqArray) : _originalAlignedSeqs(seqArray), _numberOfSequences(seqArray.size())
 {
 	initializeAllVariables();
 } //constructor from vector string
 
 MSA::MSA(string filename) : _originalAlignedSeqs(read_fasta_from_file(filename)),
-							_numberOfSequences(_originalAlignedSeqs.size()),
-							_statFlag(false)
+							_numberOfSequences(_originalAlignedSeqs.size())
 {
-	// trimMSAFromAllIndelPositionAndgetSummaryStatisticsFromIndelCounter();
-	// setValuesOfIndelSummStats();
-	// setLongestAndShortestSequenceLengths();
-	
+    initializeAllVariables();
 } //constructor from sequence file in fasta
 
 
@@ -62,7 +58,6 @@ void MSA::initializeAllVariables() {
 
 void MSA::recomputeStats() {
 	initializeAllVariables();
-
 
 	trimMSAFromAllIndelPositionAndgetSummaryStatisticsFromIndelCounter();
 	setValuesOfIndelSummStats();
@@ -253,9 +248,9 @@ void MSA::setLongestAndShortestSequenceLengths()
 	_shortestSeqLength = 0; //initialization inside loop
 	for(int i=0; i<_numberOfSequences; i++)
 	{
-		for(size_t j=0;j<_alignedSeqs[i].size();j++)
+		for(size_t j=0;j<_originalAlignedSeqs[i].size();j++)
 		{
-			if(_alignedSeqs[i][j]!='-')
+			if(_originalAlignedSeqs[i][j]!='-')
 				sequencesLengths[i]++;
 		}
 		if(i == 0)
@@ -342,9 +337,8 @@ void MSA::trimMSAFromAllIndelPositionAndgetSummaryStatisticsFromIndelCounter() {
 	_numberOfMSA_position_with_2_gaps = 0;
 	_numberOfMSA_position_with_n_minus_1_gaps = 0;
 
-	//cout << "BEFORE:" << endl;
-	//printMSA();
 	_indelCounter.resize(getMSAlength());
+
 	for (int i = 0; i < _numberOfSequences; i++) {
 		for (int j = 0; j < getMSAlength(); j++) {
 			if (_alignedSeqs[i][j] == '-') _indelCounter[j]++;
@@ -382,11 +376,6 @@ void MSA::printMSA() {
 
 
 vector<double> MSA::getStatVec() {
-	if(!_statFlag) {
-		_statFlag = true;
-		recomputeStats();
-	}
-
 	vector<double> statVals;
 
 	statVals.push_back(getStatValByType(AVG_GAP_SIZE));
@@ -417,8 +406,4 @@ vector<double> MSA::getStatVec() {
 	statVals.push_back(getStatValByType(MSA_POSITION_WITH_2_GAPS));
 	statVals.push_back(getStatValByType(MSA_POSITION_WITH_N_MINUS_1_GAPS));
 	return statVals;
-}
-
-void MSA::setStatFlag(){
-	_statFlag = true;
 }
