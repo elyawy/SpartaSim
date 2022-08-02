@@ -23,6 +23,7 @@ PYBIND11_MODULE(Sparta, m) {
         .def(py::init<const std::string&>())
         .def("init_sim", &Simulator::InitSimulator)
         .def("set_seed", &Simulator::setSeed)
+        .def("set_max_indel_size", &Simulator::setMaxIndelSize)
         .def("run_sim", &Simulator::simulateBasedOnTree);
 
     py::class_<MSA>(m, "Msa")

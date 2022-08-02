@@ -17,13 +17,13 @@
 using namespace std;
 
 typedef unsigned short nucID;
-const int MaxIndelSize = 50; // maximum length of insertion or deletion
 
 class Simulator {
 	public:
 		explicit Simulator(const string& treeFileName);
 		void InitSimulator(size_t rootLength, const string& distName,  Vdouble Insertion_params, Vdouble Deletion_params, double IR, double DR);
 		void setSeed(size_t seed);
+		void setMaxIndelSize(size_t max_size);
 		MSA simulateBasedOnTree();
 		vector<string> leafNames;
 
@@ -77,6 +77,8 @@ class Simulator {
 		Vdouble _Deletion_params; // this parameter dictates the Zippfian distribution of deletion sizes
 		double _IR; // note that this is the insertion rate per position
 		double _DR; // note that this is the deletion rate per position
+
+		size_t _maxIndelSize;
 
 		lengthDistribution* length_dist_deletions;
 		lengthDistribution* length_dist_insertions;
