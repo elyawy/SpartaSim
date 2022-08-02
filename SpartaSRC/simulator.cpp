@@ -14,6 +14,9 @@ bool is_boomed;
 Simulator::Simulator(const string& treeFileName) {
 	_originTree = tree(treeFileName);
 	RandomGenerators::initRandomGenerator(); // initialize random generators in simulation (pseudo-random given time).
+	_maxIndelSize = 150;
+	length_dist_deletions = nullptr;
+	length_dist_insertions = nullptr;
 }
 
 // Prepare simulator for specific simulation, need to be called for each set of different parameters.
@@ -27,12 +30,11 @@ void Simulator::InitSimulator(size_t rootLength,
 	_IR = IR;
 	_DR = DR;
 
-	length_dist_deletions = nullptr;
-	length_dist_insertions = nullptr;
+	
 
 
-	getDistribution(length_dist_deletions, _distName, _Deletion_params, MaxIndelSize);
-	getDistribution(length_dist_insertions, _distName, _Insertion_params, MaxIndelSize);
+	getDistribution(length_dist_deletions, _distName, _Deletion_params, _maxIndelSize);
+	getDistribution(length_dist_insertions, _distName, _Insertion_params, _maxIndelSize);
 }
 
 // Force a specific random seed on the simulator to create repeatable simulations.
@@ -40,6 +42,13 @@ void Simulator::setSeed(size_t seed){
 	RandomGenerators::setSeed(seed);
 }
 
+void Simulator::setMaxIndelSize(size_t max_size){
+	_maxIndelSize = max_size;
+	if (length_dist_deletions != nullptr && length_dist_insertions != nullptr){
+		getDistribution(length_dist_deletions, _distName, _Deletion_params, _maxIndelSize);
+		getDistribution(length_dist_insertions, _distName, _Insertion_params, _maxIndelSize);
+	}
+}
 
 //the simulation of the given tree which reprsented by "treeFileName"
 MSA Simulator::simulateBasedOnTree() {
