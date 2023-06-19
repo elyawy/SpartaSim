@@ -1,4 +1,4 @@
-# Genome Rearrangement Simulator
+# Sparta INDEL Simulator
 
 A simple and fast simulator written in c++ with python bindings, Allowing advanced research in evolutionary biology.
 
