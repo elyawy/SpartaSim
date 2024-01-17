@@ -5,11 +5,14 @@ A simple and fast simulator written in c++ with python bindings, Allowing advanc
 ## ⚡️ Quick start
 
 - To compile the simulator c++ python package do the following:
-  1. Clone this repo to a linux machine.
-  2. Create a python 3.6+ environment.
-  3. cd into the GenomeRearrangement_package folder.
-  4.  In the terminal run ```pip install .```.
-  5.  For ease of use, it is recommended to install the module at: https://github.com/elyawy/SpartaPipeline/tree/main/utils
+  1. Clone this repo to a linux machine:
+     ```bash
+     git clone --recursive https://github.com/elyawy/SpartaSim.git
+     ```
+  3. Create a python 3.6+ environment.
+  4. cd into the SpartaSim folder.
+  5.  In the terminal run ```pip install .```.
+  6.  For ease of use, it is recommended to install the module at: https://github.com/elyawy/SpartaPipeline/tree/main/utils
    
 - Example use of the simulator:
   
